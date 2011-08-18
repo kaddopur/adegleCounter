@@ -93,6 +93,7 @@ public class ChartView extends View {
 		// plus
 		float x1=0.0f, y1=0.0f;
 		float x2=0.0f, y2=0.0f;
+		float plusY, minusY, sumY;
 		int i;
 		paint.setColor(Color.BLUE);
 		paint.setStyle(Style.STROKE);
@@ -104,7 +105,7 @@ public class ChartView extends View {
 			
 			canvas.drawLine(x1, y1, x2, y2, paint);
 		}
-		canvas.drawText(""+Global.historyTable.get(i)[1], x2+10, y2+5, paint);
+		plusY = y2+5;
 		
 		
 		// minus
@@ -118,7 +119,7 @@ public class ChartView extends View {
 			
 			canvas.drawLine(x1, y1, x2, y2, paint);
 		}
-		canvas.drawText(""+Global.historyTable.get(i)[2], x2+10, y2+5, paint);
+		minusY = y2+5;
 		
 		// sum
 		paint.setARGB(255, 255, 144, 0);
@@ -131,6 +132,47 @@ public class ChartView extends View {
 			
 			canvas.drawLine(x1, y1, x2, y2, paint);
 		}
-		canvas.drawText(""+Global.historyTable.get(i)[3], x2+10, y2+5, paint);
+		sumY = y2+5;
+
+		// mark
+		if (plusY <= minusY){
+			if (plusY < 10) {
+				plusY = 10;
+			}
+			
+			if (Math.abs(plusY - minusY) < 15){
+				while (Math.abs(plusY - minusY) < 15){
+					minusY += 1;
+				}
+			} else if(Math.abs(plusY - sumY) < 15) {
+				while (Math.abs(plusY - sumY) < 15){
+					sumY += 1;
+				}
+			} else {
+				if (minusY < sumY && sumY - minusY < 15){
+					while (sumY - minusY < 15){
+						minusY -= 1;
+						sumY += 1;
+						
+					}
+				} else if (sumY <= minusY && minusY - sumY < 15) {
+					while (minusY - sumY < 15){
+						sumY -= 1;
+						minusY += 1;
+					}
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		paint.setColor(Color.BLUE);
+		canvas.drawText(""+Global.historyTable.get(i)[1], x2+10, plusY, paint);
+		paint.setColor(Color.RED);
+		canvas.drawText(""+Global.historyTable.get(i)[2], x2+10, minusY, paint);
+		paint.setARGB(255, 255, 144, 0);
+		canvas.drawText(""+Global.historyTable.get(i)[3], x2+10, sumY, paint);
 	}
 }
