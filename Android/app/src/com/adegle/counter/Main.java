@@ -1,10 +1,18 @@
 package com.adegle.counter;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+
 import android.R.string;
 import android.app.Activity;
 import android.app.Service;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,9 +47,7 @@ public class Main extends Activity {
     private int plusValue;
     private int minusValue;
     private int sumValue;
-    private String styleValue;
-    private String stageValue;
-    private String nameValue;
+    
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class Main extends Activity {
 			plus.setText("" + plusValue);
 			minus.setText("" + minusValue);
 			sum.setText("" + sumValue);
+			
+			Global.historyTable.clear();
 			break;
 		case 1:
 			// swap
@@ -108,9 +116,10 @@ public class Main extends Activity {
 		plusValue = 0;
 		minusValue = 0;
 		sumValue = 0;
-		styleValue = "";
-	    stageValue = "";
-	    nameValue = "";
+		Global.styleValue = "";
+		Global.stageValue = "";
+		Global.nameValue = "";
+	    Global.historyTable = new ArrayList<long[]>();
 		
 		add.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -146,7 +155,7 @@ public class Main extends Activity {
 		style.setAdapter(styleAdapter);
 		style.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
-				styleValue = adapterView.getSelectedItem().toString();
+				Global.styleValue = adapterView.getSelectedItem().toString();
 			}
 			public void onNothingSelected(AdapterView arg0) {
 				Toast.makeText(Main.this, "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
@@ -159,7 +168,7 @@ public class Main extends Activity {
 		stage.setAdapter(stageAdapter);
 		stage.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
-				stageValue = adapterView.getSelectedItem().toString();
+				Global.stageValue = adapterView.getSelectedItem().toString();
 			}
 			public void onNothingSelected(AdapterView arg0) {
 				Toast.makeText(Main.this, "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
@@ -170,18 +179,30 @@ public class Main extends Activity {
 		save.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				nameValue = name.getText().toString();
-				if(nameValue.equals("")) {
-					nameValue = "Anonymous";
+				Global.nameValue = name.getText().toString();
+				if(Global.nameValue.equals("")) {
+					Global.nameValue = "Anonymous";
 				}
-				Log.e("123", styleValue + ", " + 
-						     stageValue + ", " + 
-						     nameValue + ", " +
-						     plusValue + ", " +
-						     minusValue + ", " +
-						     sumValue);
+				Intent intent = new Intent();
+				intent.setClass(Main.this, Chart.class);
+				startActivity(intent);
+				//Main.this.finish();
 			}
 		});
+	}
+	
+	private void writeHistory() {
+		long[] current = {System.currentTimeMillis(), (long)plusValue, (long)minusValue, (long)sumValue};
+		Global.historyTable.add(current);
+	}
+	
+	protected void increase() {
+		plusValue += 1;
+		sumValue += 1;
+		plus.setText(""+ plusValue);
+		sum.setText(""+ sumValue);
+		vibrate(50);
+		writeHistory();
 	}
 
 	protected void decrease() {
@@ -190,14 +211,7 @@ public class Main extends Activity {
 		minus.setText(""+ minusValue);
 		sum.setText(""+ sumValue);
 		vibrate(50);
-	}
-
-	protected void increase() {
-		plusValue += 1;
-		sumValue += 1;
-		plus.setText(""+ plusValue);
-		sum.setText(""+ sumValue);
-		vibrate(50);
+		writeHistory();
 	}
 
 	protected void vibrate(int duration) {
