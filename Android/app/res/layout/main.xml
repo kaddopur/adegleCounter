@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent" android:orientation="vertical" android:layout_width="match_parent" android:background="#eee">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linearLayout1" android:layout_gravity="left">
+        <Spinner android:layout_height="wrap_content" android:id="@+id/style" android:layout_width="154dip"></Spinner>
+        <Spinner android:layout_height="wrap_content" android:id="@+id/stage" android:layout_width="154dip"></Spinner>
+        <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/name" android:hint="enter player's name"></EditText>
+    </LinearLayout>
+    <RelativeLayout android:layout_width="match_parent" android:id="@+id/relativeLayout1" android:layout_gravity="center" android:layout_height="80dip">
+        <Button android:layout_height="wrap_content" android:id="@+id/save" android:text="Save Score" android:layout_centerInParent="true" android:layout_width="80dip"></Button>
+    </RelativeLayout>
+    <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/relativeLayout3">
+        <RelativeLayout android:layout_height="wrap_content" android:id="@+id/relativeLayout2" android:layout_centerInParent="true" android:layout_width="wrap_content">
+            <Button android:layout_centerVertical="true" android:id="@+id/sub" android:textSize="40dip" android:text="-" android:layout_width="150dip" android:layout_height="150dip"></Button>
+            <LinearLayout android:layout_centerVertical="true" android:layout_marginLeft="50dip" android:layout_toRightOf="@id/sub" android:id="@+id/score" android:layout_marginRight="50dip" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="90dip">
+                <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/relativeLayout4">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView1" android:text="+:" android:layout_alignParentLeft="true" android:textColor="#000" android:textSize="25dip" android:typeface="monospace" android:layout_centerVertical="true"></TextView>
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="5dip" android:layout_marginBottom="5dip" android:textSize="25dip" android:textColor="#000" android:typeface="monospace" android:id="@+id/plus" android:text="0" android:layout_alignParentRight="true" android:layout_centerVertical="true"></TextView>
+                </RelativeLayout>
+                <RelativeLayout android:layout_height="wrap_content" android:id="@+id/relativeLayout5" android:layout_width="wrap_content">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView2" android:text="-:" android:textColor="#000" android:textSize="25dip" android:typeface="monospace" android:layout_centerVertical="true"></TextView>
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="5dip" android:layout_marginBottom="5dip" android:textSize="25dip" android:textColor="#000" android:typeface="monospace" android:id="@+id/minus" android:text="0" android:layout_alignParentRight="true" android:layout_centerVertical="true"></TextView>
+                </RelativeLayout>
+                <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/relativeLayout6">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView3" android:text="=:" android:textColor="#000" android:textSize="25dip" android:typeface="monospace" android:layout_centerVertical="true"></TextView>
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="5dip" android:layout_marginBottom="5dip" android:textSize="25dip" android:textColor="#000" android:typeface="monospace" android:id="@+id/sum" android:text="0" android:layout_alignParentRight="true" android:layout_centerVertical="true"></TextView>
+                </RelativeLayout>
+            </LinearLayout>
+            <Button android:layout_centerVertical="true" android:id="@+id/add" android:layout_toRightOf="@id/score" android:textSize="40dip" android:text="+" android:layout_width="150dip" android:layout_height="150dip"></Button>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
