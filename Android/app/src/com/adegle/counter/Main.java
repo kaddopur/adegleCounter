@@ -6,6 +6,8 @@ import android.app.Service;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +25,9 @@ public class Main extends Activity {
     /** Called when the activity is first created. */
 	
 	private Button add;
+	private Button addSwap;
     private Button sub;
+    private Button subSwap;
     private Button save;
     private TextView plus;
     private TextView minus;
@@ -50,37 +54,92 @@ public class Main extends Activity {
         initViews();
 
     }
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// 參數1:群組id, 參數2:itemId, 參數3:item順序, 參數4:item名稱
+		menu.add(0, 0, 0, "Clear");
+		menu.add(0, 1, 1, "Swap");
+		menu.add(0, 2, 2, "History");
+		menu.add(0, 3, 3, "Setting");
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case 0:
+			// clear
+			plusValue = 0;
+			minusValue = 0;
+			sumValue = 0;
+			
+			plus.setText("" + plusValue);
+			minus.setText("" + minusValue);
+			sum.setText("" + sumValue);
+			break;
+		case 1:
+			// swap
+			if (add.getVisibility() == View.VISIBLE){
+				add.setVisibility(View.INVISIBLE);
+				sub.setVisibility(View.INVISIBLE);
+				addSwap.setVisibility(View.VISIBLE);
+				subSwap.setVisibility(View.VISIBLE);
+			} else {
+				add.setVisibility(View.VISIBLE);
+				sub.setVisibility(View.VISIBLE);
+				addSwap.setVisibility(View.INVISIBLE);
+				subSwap.setVisibility(View.INVISIBLE);
+			}
+			break;
+		case 2:
+			//history
+			break;
+		case 3:
+			//setting
+			
+			break;
+		default:
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	private void initViews() {
 		plusValue = 0;
 		minusValue = 0;
 		sumValue = 0;
-		styleValue = "1A";
-	    stageValue = "prelim";
+		styleValue = "";
+	    stageValue = "";
 	    nameValue = "";
 		
-		// TODO Auto-generated method stub
 		add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				plusValue = Integer.valueOf((String)plus.getText()) + 1;
-				plus.setText(""+ plusValue);
-				sumValue += 1;
-				sum.setText(""+ sumValue);
-				vibrate(50);
+				increase();
+			}
+		});
+		
+		addSwap.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				increase();
 			}
 		});
 		
 		sub.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				minusValue = Integer.valueOf((String)minus.getText()) + 1;
-				minus.setText(""+ minusValue);
-				sumValue -= 1;
-				sum.setText(""+ sumValue);
-				vibrate(50);
+				decrease();
 			}
 		});
+		
+		subSwap.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				decrease();
+			}
+		});
+		
 		
 		ArrayAdapter<String> styleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{"1A","2A","3A", "4A", "5A"});
 		styleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,13 +147,12 @@ public class Main extends Activity {
 		style.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
 				styleValue = adapterView.getSelectedItem().toString();
-				name.setText(styleValue + ", " + stageValue);
-				Log.e("123", "styleValue " + styleValue);
 			}
 			public void onNothingSelected(AdapterView arg0) {
 				Toast.makeText(Main.this, "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
 			}
 		});
+		
 		
 		ArrayAdapter<String> stageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{"prelim", "final"});
 		stageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,25 +160,44 @@ public class Main extends Activity {
 		stage.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView adapterView, View view, int position, long id){
 				stageValue = adapterView.getSelectedItem().toString();
-				name.setText(styleValue + ", " + stageValue);
-				Log.e("123", "stageValue " + stageValue);
 			}
 			public void onNothingSelected(AdapterView arg0) {
 				Toast.makeText(Main.this, "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
 			}
 		});
 		
-	
 		
-//		21.        //設定項目被選取之後的動作
-//		22.        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-//		23.            public void onItemSelected(AdapterView adapterView, View view, int position, long id){
-//		24.                Toast.makeText(MainActivity.this, "您選擇"+adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-//		25.            }
-//		26.            public void onNothingSelected(AdapterView arg0) {
-//		27.                Toast.makeText(MainActivity.this, "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-//		28.            }
-//		29.        });
+		save.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				nameValue = name.getText().toString();
+				if(nameValue.equals("")) {
+					nameValue = "Anonymous";
+				}
+				Log.e("123", styleValue + ", " + 
+						     stageValue + ", " + 
+						     nameValue + ", " +
+						     plusValue + ", " +
+						     minusValue + ", " +
+						     sumValue);
+			}
+		});
+	}
+
+	protected void decrease() {
+		minusValue += 1;
+		sumValue -= 1;
+		minus.setText(""+ minusValue);
+		sum.setText(""+ sumValue);
+		vibrate(50);
+	}
+
+	protected void increase() {
+		plusValue += 1;
+		sumValue += 1;
+		plus.setText(""+ plusValue);
+		sum.setText(""+ sumValue);
+		vibrate(50);
 	}
 
 	protected void vibrate(int duration) {
@@ -130,7 +207,9 @@ public class Main extends Activity {
 
 	private void bindViews() {
 		add = (Button)findViewById(R.id.add);
+		addSwap = (Button)findViewById(R.id.addSwap);
 		sub = (Button)findViewById(R.id.sub);
+		subSwap = (Button)findViewById(R.id.subSwap);
 	    save = (Button)findViewById(R.id.save);
 	    plus = (TextView)findViewById(R.id.plus);
 	    minus = (TextView)findViewById(R.id.minus);
