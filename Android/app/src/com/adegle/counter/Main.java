@@ -8,7 +8,9 @@ import java.util.TimeZone;
 
 import android.R.string;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Service;
+import android.content.ContentProviderOperation.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -83,8 +85,8 @@ public class Main extends Activity {
 			plus.setText("" + plusValue);
 			minus.setText("" + minusValue);
 			sum.setText("" + sumValue);
-			
-			Global.historyTable.clear();
+
+			Global.historyTable = new ArrayList<long[]>();
 			break;
 		case 1:
 			// swap
@@ -183,15 +185,31 @@ public class Main extends Activity {
 				if(Global.nameValue.equals("")) {
 					Global.nameValue = "Anonymous";
 				}
-				Intent intent = new Intent();
-				intent.setClass(Main.this, Chart.class);
-				startActivity(intent);
+				
+				if(Global.historyTable.size() >= 2){
+					Intent intent = new Intent();
+					intent.setClass(Main.this, Chart.class);
+					startActivity(intent);
+				} else {
+					AlertDialog.Builder mAlertDialog = new AlertDialog.Builder(Main.this);
+					mAlertDialog.setTitle("Info")
+						.setMessage("There is no data to display!")
+						.setPositiveButton("Back", null)
+						.setIcon(R.drawable.icon)
+						.show();
+					
+				}
 				//Main.this.finish();
 			}
 		});
 	}
 	
 	private void writeHistory() {
+		if (Global.historyTable.size() == 0){
+			Global.historyTable = new ArrayList<long[]>();
+			long[] current = {System.currentTimeMillis()-500, 0, 0, 0};
+			Global.historyTable.add(current);
+		}
 		long[] current = {System.currentTimeMillis(), (long)plusValue, (long)minusValue, (long)sumValue};
 		Global.historyTable.add(current);
 	}
