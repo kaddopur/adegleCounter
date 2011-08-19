@@ -149,9 +149,11 @@ public class Main extends Activity {
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
-						v.setBackgroundColor(Color.argb(128, 0, 0, 255));
-						increase();
-					} else {
+						if (inSelfSide(v, event.getX(), event.getY())) {
+							v.setBackgroundColor(Color.argb(128, 0, 0, 255));
+							increase();
+						}
+					} else if(inOtherSide(v, sub, event.getX(1), event.getY(1))){
 						sub.setBackgroundColor(Color.argb(128, 255, 0, 0));
 						decrease();
 					}
@@ -184,9 +186,11 @@ public class Main extends Activity {
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
-						v.setBackgroundColor(Color.argb(128, 0, 0, 255));
-						increase();
-					} else {
+						if (inSelfSide(v, event.getX(), event.getY())) {
+							v.setBackgroundColor(Color.argb(128, 0, 0, 255));
+							increase();
+						}
+					} else if(inOtherSide(v, subSwap, event.getX(1), event.getY(1))){
 						subSwap.setBackgroundColor(Color.argb(128, 255, 0, 0));
 						decrease();
 					}
@@ -220,9 +224,11 @@ public class Main extends Activity {
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
-						v.setBackgroundColor(Color.argb(128, 255, 0, 0));
-						decrease();
-					} else {
+						if (inSelfSide(v, event.getX(), event.getY())) {
+							v.setBackgroundColor(Color.argb(128, 255, 0, 0));
+							decrease();
+						}
+					} else if(inOtherSide(v, add, event.getX(1), event.getY(1))){
 						add.setBackgroundColor(Color.argb(128, 0, 0, 255));
 						increase();
 					}
@@ -255,9 +261,11 @@ public class Main extends Activity {
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
-						v.setBackgroundColor(Color.argb(128, 255, 0, 0));
-						decrease();
-					} else {
+						if (inSelfSide(v, event.getX(), event.getY())) {
+							v.setBackgroundColor(Color.argb(128, 255, 0, 0));
+							decrease();
+						}
+					} else if(inOtherSide(v, addSwap, event.getX(1), event.getY(1))){
 						addSwap.setBackgroundColor(Color.argb(128, 0, 0, 255));
 						increase();
 					}
@@ -320,6 +328,37 @@ public class Main extends Activity {
 		});
 	}
 	
+	protected boolean inSelfSide(View me, float x, float y) {
+		int meWidth = me.getWidth();
+		int meHeight = me.getWidth();
+		
+		if (0 <= x && x <= meWidth &&
+			0 <= y && y <= meHeight) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	protected boolean inOtherSide(View me, View other, float x, float y) {
+		int[] meLoc = {0, 0};
+		me.getLocationOnScreen(meLoc);
+		
+		int[] otherLoc = {0, 0};
+		other.getLocationOnScreen(otherLoc);
+		int otherWidth = other.getWidth();
+		int otherHeight = other.getWidth();
+		
+		if (otherLoc[0] <= meLoc[0]+x && meLoc[0]+x <= otherLoc[0]+otherWidth &&
+			otherLoc[1] <= meLoc[1]+y && meLoc[1]+y <= otherLoc[1]+otherHeight){
+			return true;
+		}
+		Log.v("123", "" + x+" "+y);
+		Log.v("123", "me" + meLoc[0]+" "+meLoc[1]);
+		Log.v("123", "other" + otherLoc[0]+" "+otherLoc[1]+" "+otherWidth+" "+otherHeight);
+		return false;
+	}
+
 	private void writeHistory() {
 		if (Global.historyTable.size() == 0){
 			Global.historyTable = new ArrayList<long[]>();
