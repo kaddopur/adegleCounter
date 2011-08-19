@@ -162,6 +162,16 @@ public class ChartView extends View {
 					}
 				}
 			}
+		} else {
+			if (minusY < 10) {
+				minusY = 10;
+			}
+			
+			if (Math.abs(plusY - minusY) < 15){
+				while (Math.abs(plusY - minusY) < 15){
+					plusY += 1;
+				}
+			}
 		}
 		
 		
