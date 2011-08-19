@@ -336,7 +336,6 @@ public class Main extends Activity {
 			0 <= y && y <= meHeight) {
 			return true;
 		}
-		
 		return false;
 	}
 
@@ -353,9 +352,6 @@ public class Main extends Activity {
 			otherLoc[1] <= meLoc[1]+y && meLoc[1]+y <= otherLoc[1]+otherHeight){
 			return true;
 		}
-		Log.v("123", "" + x+" "+y);
-		Log.v("123", "me" + meLoc[0]+" "+meLoc[1]);
-		Log.v("123", "other" + otherLoc[0]+" "+otherLoc[1]+" "+otherWidth+" "+otherHeight);
 		return false;
 	}
 
