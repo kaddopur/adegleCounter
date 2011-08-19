@@ -11,8 +11,8 @@
     </RelativeLayout>
     <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/relativeLayout3">
         <RelativeLayout android:layout_height="wrap_content" android:id="@+id/relativeLayout2" android:layout_centerInParent="true" android:layout_width="wrap_content">
-            <Button android:layout_centerVertical="true" android:id="@+id/sub" android:textSize="40dip" android:text="-" android:layout_width="150dip" android:layout_height="150dip"></Button>
-            <Button android:layout_height="150dip" android:textSize="40dip" android:text="+" android:layout_width="150dip" android:layout_alignParentLeft="true" android:id="@+id/addSwap" android:visibility="invisible"></Button>
+            <Button android:layout_centerVertical="true" android:id="@+id/sub" android:textSize="40dip" android:text="-" android:layout_width="150dip" android:layout_height="150dip" android:background="#ccc"></Button>
+            <Button android:layout_height="150dip" android:textSize="40dip" android:text="+" android:layout_width="150dip" android:layout_alignParentLeft="true" android:id="@+id/addSwap" android:visibility="invisible" android:background="#ccc"></Button>
             <LinearLayout android:layout_centerVertical="true" android:layout_marginLeft="50dip" android:layout_toRightOf="@id/sub" android:id="@+id/score" android:layout_marginRight="50dip" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="90dip">
                 <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/relativeLayout4">
                     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView1" android:text="+:" android:layout_alignParentLeft="true" android:textColor="#000" android:textSize="25dip" android:typeface="monospace" android:layout_centerVertical="true"></TextView>
@@ -27,8 +27,8 @@
                     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="5dip" android:layout_marginBottom="5dip" android:textSize="25dip" android:textColor="#000" android:typeface="monospace" android:id="@+id/sum" android:text="0" android:layout_alignParentRight="true" android:layout_centerVertical="true"></TextView>
                 </RelativeLayout>
             </LinearLayout>
-            <Button android:layout_centerVertical="true" android:id="@+id/add" android:layout_toRightOf="@id/score" android:textSize="40dip" android:text="+" android:layout_width="150dip" android:layout_height="150dip"></Button>
-            <Button android:layout_height="150dip" android:textSize="40dip" android:text="-" android:layout_width="150dip" android:layout_toRightOf="@id/score" android:id="@+id/subSwap" android:visibility="invisible"></Button>
+            <Button android:layout_centerVertical="true" android:id="@+id/add" android:layout_toRightOf="@id/score" android:textSize="40dip" android:text="+" android:layout_width="150dip" android:layout_height="150dip" android:background="#ccc"></Button>
+            <Button android:layout_height="150dip" android:textSize="40dip" android:text="-" android:layout_width="150dip" android:layout_toRightOf="@id/score" android:id="@+id/subSwap" android:visibility="invisible" android:background="#ccc"></Button>
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

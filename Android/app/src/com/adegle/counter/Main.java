@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.ContentProviderOperation.Builder;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.format.Time;
@@ -125,54 +126,146 @@ public class Main extends Activity {
 	    Global.historyTable = new ArrayList<long[]>();
 	    
 	    
-		View.OnTouchListener incListener = new View.OnTouchListener() {
+	    add.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
 
 				switch (event.getAction() & MotionEvent.ACTION_MASK) {
 				case MotionEvent.ACTION_DOWN:
+					v.setBackgroundColor(Color.argb(128, 0, 0, 255));
 					increase();
 					break;
+				case MotionEvent.ACTION_UP:
+					v.setBackgroundColor(Color.LTGRAY);
+					sub.setBackgroundColor(Color.LTGRAY);
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					if (id == 0) {
+						v.setBackgroundColor(Color.LTGRAY);
+					} else {
+						sub.setBackgroundColor(Color.LTGRAY);
+					}
+					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
+						v.setBackgroundColor(Color.argb(128, 0, 0, 255));
 						increase();
 					} else {
+						sub.setBackgroundColor(Color.argb(128, 255, 0, 0));
 						decrease();
 					}
 					break;
 				}
 				return true;
 			}
-		};
-	   
-	   
-		View.OnTouchListener decListener = new View.OnTouchListener() {
+		});
+	    
+	    addSwap.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
 
 				switch (event.getAction() & MotionEvent.ACTION_MASK) {
 				case MotionEvent.ACTION_DOWN:
-					decrease();
+					v.setBackgroundColor(Color.argb(128, 0, 0, 255));
+					increase();
+					break;
+				case MotionEvent.ACTION_UP:
+					v.setBackgroundColor(Color.LTGRAY);
+					subSwap.setBackgroundColor(Color.LTGRAY);
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					if (id == 0) {
+						v.setBackgroundColor(Color.LTGRAY);
+					} else {
+						subSwap.setBackgroundColor(Color.LTGRAY);
+					}
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
 					if (id == 0) {
+						v.setBackgroundColor(Color.argb(128, 0, 0, 255));
+						increase();
+					} else {
+						subSwap.setBackgroundColor(Color.argb(128, 255, 0, 0));
+						decrease();
+					}
+					break;
+				}
+				return true;
+			}
+		});
+	   
+	   
+	    sub.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					v.setBackgroundColor(Color.argb(128, 255, 0, 0));
+					decrease();
+					break;
+				case MotionEvent.ACTION_UP:
+					v.setBackgroundColor(Color.LTGRAY);
+					add.setBackgroundColor(Color.LTGRAY);
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					if (id == 0) {
+						v.setBackgroundColor(Color.LTGRAY);
+					} else {
+						add.setBackgroundColor(Color.LTGRAY);
+					}
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					if (id == 0) {
+						v.setBackgroundColor(Color.argb(128, 255, 0, 0));
 						decrease();
 					} else {
+						add.setBackgroundColor(Color.argb(128, 0, 0, 255));
 						increase();
 					}
 					break;
 				}
 				return true;
 			}
-		};
+		});
 		    
-	    add.setOnTouchListener(incListener);
-	    addSwap.setOnTouchListener(incListener);
-	    
-	    sub.setOnTouchListener(decListener);
-	    subSwap.setOnTouchListener(decListener);
+	    subSwap.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					v.setBackgroundColor(Color.argb(128, 255, 0, 0));
+					decrease();
+					break;
+				case MotionEvent.ACTION_UP:
+					v.setBackgroundColor(Color.LTGRAY);
+					addSwap.setBackgroundColor(Color.LTGRAY);
+					break;
+				case MotionEvent.ACTION_POINTER_UP:
+					if (id == 0) {
+						v.setBackgroundColor(Color.LTGRAY);
+					} else {
+						addSwap.setBackgroundColor(Color.LTGRAY);
+					}
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					if (id == 0) {
+						v.setBackgroundColor(Color.argb(128, 255, 0, 0));
+						decrease();
+					} else {
+						addSwap.setBackgroundColor(Color.argb(128, 0, 0, 255));
+						increase();
+					}
+					break;
+				}
+				return true;
+			}
+		});
 		
 		
 		ArrayAdapter<String> styleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{"1A","2A","3A", "4A", "5A"});
