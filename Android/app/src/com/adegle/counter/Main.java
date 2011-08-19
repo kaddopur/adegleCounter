@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -122,34 +123,56 @@ public class Main extends Activity {
 		Global.stageValue = "";
 		Global.nameValue = "";
 	    Global.historyTable = new ArrayList<long[]>();
-		
-		add.setOnClickListener(new View.OnClickListener() {
+	    
+	    
+		View.OnTouchListener incListener = new View.OnTouchListener() {
 			@Override
-			public void onClick(View v) {
-				increase();
+			public boolean onTouch(View v, MotionEvent event) {
+				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					increase();
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					if (id == 0) {
+						increase();
+					} else {
+						decrease();
+					}
+					break;
+				}
+				return true;
 			}
-		});
-		
-		addSwap.setOnClickListener(new View.OnClickListener() {
+		};
+	   
+	   
+		View.OnTouchListener decListener = new View.OnTouchListener() {
 			@Override
-			public void onClick(View v) {
-				increase();
+			public boolean onTouch(View v, MotionEvent event) {
+				int id = event.getAction() >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN:
+					decrease();
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN:
+					if (id == 0) {
+						decrease();
+					} else {
+						increase();
+					}
+					break;
+				}
+				return true;
 			}
-		});
-		
-		sub.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				decrease();
-			}
-		});
-		
-		subSwap.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				decrease();
-			}
-		});
+		};
+		    
+	    add.setOnTouchListener(incListener);
+	    addSwap.setOnTouchListener(incListener);
+	    
+	    sub.setOnTouchListener(decListener);
+	    subSwap.setOnTouchListener(decListener);
 		
 		
 		ArrayAdapter<String> styleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[]{"1A","2A","3A", "4A", "5A"});
